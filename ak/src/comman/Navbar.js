@@ -1,41 +1,68 @@
-// Navbar.js
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsOpen(false); // Close the mobile menu after clicking on a link
+  };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url('/media/bg3.jpg')` }}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolling ? "bg-orange-400" : "bg-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between">
           <div className="flex items-center space-x-2">
-            <Link to="/" className="font-semibold text-2xl font-custum">
+            <Link to="#" className="font-bold text-3xl text-black">
               AK NURSING
             </Link>
-            <img src="../media/logo1.png" alt="kuch bhi" className="w-8 h-8 "/>
+            <img src="../media/logo.png" alt="kuch bhi" className="w-10 h-10 mt-2 " />
           </div>
           <div className="hidden md:flex md:items-center md:space-x-4">
-            <Link
-              to="/"
-              className="text-gray hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+            <button
+              onClick={() => scrollToSection("home")}
+              className="text-gray hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-bold underline decoration-orange-400	decoration-solid 	"
             >
               Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-gray hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+            </button>
+            <button
+              onClick={() => scrollToSection("courses")}
+              className="text-gray hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-bold underline decoration-orange-400 decoration-solid"
+            >
+              Courses
+            </button>
+            <button
+              onClick={() => scrollToSection("about")}
+              className="text-gray hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-bold underline decoration-orange-400	decoration-solid"
             >
               About
-            </Link>
-            <Link
-              to="/contact"
-              className="text-gray hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
-            >
-              Contact
-            </Link>
+            </button>
           </div>
           <div className="md:hidden flex items-center">
             <button
@@ -76,24 +103,24 @@ const Navbar = () => {
               className="px-2 pt-2 pb-3 space-y-1 sm:px-3"
               onClick={() => setIsOpen(false)}
             >
-              <Link
-                to="/"
-                className="hover:bg-gray-700 hover:text-white text-gray-800 block px-3 py-2 rounded-md text-base font-medium"
+              <button
+                onClick={() => scrollToSection("home")}
+                className="hover:bg-gray-700 hover:text-white text-gray-800 block px-3 py-2 rounded-md text-base font-semibold"
               >
                 Home
-              </Link>
-              <Link
-                to="/about"
-                className="hover:bg-gray-700 hover:text-white text-gray-800 block px-3 py-2 rounded-md text-base font-medium"
+              </button>
+              <button
+                onClick={() => scrollToSection("about")}
+                className="hover:bg-gray-700 hover:text-white text-gray-800 block px-3 py-2 rounded-md text-base font-semibold"
               >
                 About
-              </Link>
-              <Link
-                to="/contact"
-                className="hover:bg-gray-700 hover:text-white text-gray-800 block px-3 py-2 rounded-md text-base font-medium"
+              </button>
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="hover:bg-gray-700 hover:text-white text-gray-800 block px-3 py-2 rounded-md text-base font-semibold"
               >
                 Contact
-              </Link>
+              </button>
             </div>
           </div>
         )}

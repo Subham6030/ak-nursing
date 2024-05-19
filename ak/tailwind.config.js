@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'custum': ['Amita', 'sans-serif'],
+        amita: ['Amita', 'sans-serif']
       },
     },
   },
